@@ -1,0 +1,155 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.sidebar,
+.content {
+  padding: 20px;
+  width: 100%;
+}
+
+body {
+  font-family: 'Sawarabi Gothic', 'Roboto','M PLUS Rounded 1c', sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #dddddd;
+  background-image: url(assets/senga.png);
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-size: contain;
+ }
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  background: #cdccff;
+  border-radius: 5px;
+  font-family: 'Londrina Shadow', 'Roboto';
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  width: 100%;
+  background: #19191a;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+input[type="text"] {
+  width: 100%;
+  max-width: 300px;
+  padding: 1em 10px;
+  margin-right: 20px;
+  box-sizing: border-box;
+
+}
+
+input[type="submit"] {
+  background-color: #6d6d6d;
+  color: white;
+  padding: 0.5em;
+  border: none;
+}
+
+form {
+  display: flex;
+  margin-bottom: 40px;
+  padding-right: 30px;
+}
+
+li {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+}
+li input[type="checkbox"] {
+  margin-right: 10px;
+}
+li input[type="text"] {
+  border: none;
+  background: transparent;
+  flex-grow: 1;
+  
+}
+li input[type="text"]:disabled {
+  text-decoration: line-through;
+  color: #888;
+}
+ul {
+  padding-left: 0;
+}
+
+#batsu{
+  border: none;
+  background: none;
+  font-weight: bold;
+  outline: none;
+  margin-left: auto;
+}
+
+#batsu:hover {
+  color: #b70606;
+}
+
+.checked {
+  text-decoration: line-through;
+}
+
+.category-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+.category-item {
+  margin: 12px;
+  cursor: pointer;
+}
+.category-item.selected {
+  color: blue;
+  font-weight: bold;
+}
+
+button.add-todo-btn {
+  padding: 10px 20px;
+  margin-left: 5px;
+  background-color: #ffffff;
+  color: rgb(38, 38, 38);
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button.add-todo-btn:hover {
+  background-color: #cfcfcf;
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+@media screen and (min-width: 768px) {
+  .main {
+    flex-direction: row;
+  }
+  .sidebar {
+    width: 20%;
+  }
+  .content {
+    width: 70%;
+  }
+}

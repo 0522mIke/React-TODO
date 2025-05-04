@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TODO and HABITS</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Londrina+Shadow&family=Sawarabi+Gothic&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/Portfolio.png" type="image/png">
+</head>
+
+<body>
+<div id="root"></div>
+ 
+  <script type="text/babel">
+      'use strict';
+       
+    function App() {
+      const [todos, setTodos] = React.useState(() => {
+      const saved = localStorage.getItem("todos");
+    return saved ? JSON.parse(saved) : [];
+  });
+      const [todo, setTodo] = React.useState("");
+      const [selectedCategory, setSelectedCategory] = React.useState("ALL");
+      
+      React.useEffect(() => {
+        const saved = localStorage.getItem("todos");
+        if (saved) {
+          setTodos(JSON.parse(saved));
+        }
+      }, []);
+     
+      React.useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
+      const addTodo = (text, category) => {
+        if(!text) return;
+
+      const newTodo = {
+        value: text,
+        id: new Date().getTime(),
+        checked: false,
+        category: category
+      };
+      setTodos((prevTodos) => [newTodo, ...prevTodos]);
+    };
+
+    const handleCheck = (id, checked) => {
+        setTodos((prevTodos) => {
+          return prevTodos.map((todo) => {
+            if(todo.id === id) {
+              return { ...todo, checked };
+            }
+            return todo;
+          });
+        });
+      };
+
+      const handleDelete = (id) => {
+    setTodos((prevTodos) => prevTodos.filter(todo => todo.id !== id));
+  };
+  
+ const categories = [
+  { id: 0, title: 'ALL' }, 
+  { id: 1, title : 'WORK' },
+  { id: 2, title : 'STUDY' },
+  { id: 3, title : 'LIFE' },
+  { id: 4, title: 'HOBBY' },
+  { id: 5, title: 'HEALTH' },
+  { id: 6, title: 'DREAM' },
+ ];
+
+ const filteredTodos = selectedCategory ==='ALL' ? todos : todos.filter(todo => todo.category === selectedCategory);
+
+
+    return (
+      <div className="container">
+      <Header />
+
+      <div className="main">
+        <div className="sidebar">
+        <p>カテゴリー</p>
+          {categories.map((category) => (
+                <div
+                  key={category.id}
+                  className={`category-item ${selectedCategory === category.title ? 'selected' : ''}`}
+                  onClick={() => setSelectedCategory(category.title)}
+                >
+                  {category.title}
+                </div>
+              ))}
+            </div>
+
+      <div className="content">
+       <h2>My Todo</h2>
+      
+      <AddForm onAddTodo={addTodo} categories={categories} />
+
+      <TodoList
+      todos={filteredTodos}
+      onCheck={handleCheck}
+      onDelete={handleDelete}
+      />
+          </div>
+        </div>
+      <Footer />
+    </div> 
+  );
+}
+
+
+function Header() {
+  return <h1>TODO and HABITS</h1>;
+}
+
+function Footer() {
+  return <footer >2025 Copyright todo&habits</footer>;
+}
+
+function AddForm( {onAddTodo, categories} ) {
+  const [text, setText] = React.useState("");
+  const [selectedCategory, setSelectedCategory] = React.useState(categories[1].title);
+  
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onAddTodo(text, selectedCategory);
+        setText("");
+      }}
+      >
+      <input
+        type="text"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Add a task"
+          />
+
+      <select
+        value={selectedCategory}
+        onChange={(e) => setSelectedCategory(e.target.value)}
+             >
+        {categories
+          .filter((cat) => cat.title !== "ALL")
+          .map((cat) => (
+          <option key={cat.id} value={cat.title}>
+            {cat.title}
+          </option>
+        ))}
+      </select>
+
+      <button type="submit" className="add-todo-btn">追加</button>
+    </form>
+  );
+}
+
+  function TodoList({ todos, onCheck, onDelete }) {
+      if (todos.length === 0) {
+        return <p>TODOはまだありません。新しいTODOを追加してください。</p>;
+      }
+      
+      return (
+        <ul>
+          {todos.map((todo) => (
+            <li key={todo.id} className={todo.checked ? "checked" : ""}>
+               <input
+                type="checkbox"
+                checked={todo.checked}
+                onChange={() => onCheck(todo.id, !todo.checked)}
+              />
+              <span>{todo.value}</span>
+              <button id="batsu" onClick={() => onDelete(todo.id)}>X</button>
+            </li>
+          ))}
+        </ul>
+      );
+    }
+
+    function Todo({ todo }) {
+      return (
+        <div>{todo}</div>
+      );
+    }
+
+   
+const root = ReactDOM.createRoot(document.querySelector('#root'));
+      root.render(
+       <App />
+      );
+  </script>
+</body>
+</html>
